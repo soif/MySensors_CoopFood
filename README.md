@@ -1,4 +1,4 @@
-# MySensors Coop Food
+# MySensors Coop Food (WORK IN PROGRESS)
 
 This Arduino Pro Mini (3.3V) based project is a [MySensors](https://www.mysensors.org/)  node which periodically watches and reports the level of food and the level of water, in my chicken coop.
 
