@@ -38,7 +38,7 @@
 
 //For 2 rechargeable AA  batteries min voltage is 2V and max is 2.7V
 #define MIN_BAT		594		// = 2.0V  / 0.003363075
-#define MAX_BAT		802		// = 2.7V / 0.003363075
+#define MAX_BAT		828		// = 2.7V / 0.003363075
 #define BAT_READS	8  		// read battery this number of time
 
 #define CHILD_ID_FOOD	0
@@ -255,7 +255,7 @@ void reportsBattery(){
 	//stabilize
 	for (byte counter = 0; counter < 5; counter++) {
       analogRead(PIN_BATTERY);
-      wait(50);
+      wait(70);
     }
 
 	unsigned long sum =0;
@@ -265,7 +265,7 @@ void reportsBattery(){
 	  	sum +=read;
 	  	DEBUG_PRINT(read);
 	  	DEBUG_PRINT(" + ");
-     	wait(20);
+     	wait(70);
     }
 
 	//first time
