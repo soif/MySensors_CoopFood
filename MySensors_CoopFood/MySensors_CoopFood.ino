@@ -26,7 +26,7 @@
 //#define MY_TRANSPORT_SANITY_CHECK
 //#define MY_REPEATER_FEATURE
 
-#define SLEEP_TIME		(	1*60*1000ul) 		// sleep period
+#define SLEEP_TIME		(	60*60*1000ul) 	// sleep period
 #define FORCE_TIME		(3*	60*60*1000ul) 	// force report every
 
 #define MIN_FOOD_DIST	3	// minimum food distance in cm (when full)
@@ -165,6 +165,7 @@ void SendInitialtMsg(){
 
 // --------------------------------------------------------------------
 void presentation(){
+	DEBUG_PRINTLN("");
 	DEBUG_PRINTLN("*** Presentation START ******");
 	sendSketchInfo(INFO_NAME ,	INFO_VERS );
 	present(CHILD_ID_FOOD,		S_RGB_LIGHT);
