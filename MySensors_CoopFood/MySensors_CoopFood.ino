@@ -27,7 +27,7 @@
 //#define MY_REPEATER_FEATURE
 
 #define SLEEP_TIME		(	60*60*1000ul) 	// sleep period
-#define FORCE_TIME		(3*	60*60*1000ul) 	// force report every
+#define FORCE_REPORT		6 	// force report every X cycles
 
 #define MIN_FOOD_DIST	3	// minimum food distance in cm (when full)
 #define MAX_FOOD_DIST	150	// maximum food distance in cm (when empty)
@@ -80,7 +80,7 @@ byte				last_food_level 	= 0;			// LAST food level
 boolean				last_water_state	= true;			// LAST Water state
 float				last_temp_value		= -1000;		// LAST temperature value
 
-unsigned long		last_report_time	=millis();
+unsigned int		cycles_count			=0;
 boolean				force_report		=true;			//force report
 
 NewPing 			sonarFood(PIN_US_TRIG, PIN_US_ECHO, MAX_FOOD_DIST + 5 );
@@ -128,15 +128,21 @@ void loop() {
 	SendInitialtMsg();
 	if(init_msg_sent){
 		DEBUG_PRINTLN("");
-		DEBUG_PRINTLN("############");
+		DEBUG_PRINTLN("#############################");
 
-		if(millis() > last_report_time + FORCE_TIME ){
-			DEBUG_PRINTLN("# Forcing report !!!");
+		cycles_count++;
+		DEBUG_PRINT("# (");
+		DEBUG_PRINT(cycles_count);
+		DEBUG_PRINT(") ");
+		if(cycles_count >= FORCE_REPORT ){
+			DEBUG_PRINTLN("Forcing ALL reports !!!");
 			force_report=true;
-			last_report_time=millis();
+			cycles_count=0;
+		}
+		else{
+			DEBUG_PRINTLN("Reporting changed :");
 		}
 
-		DEBUG_PRINTLN("# reading...");
 		reportsFood();
 		reportsWater();
 		reportsTemp();
