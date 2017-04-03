@@ -34,7 +34,7 @@
 #define SLEEP_TIME		(	2*1000ul) 		// every 2 sec
 #define FORCE_REPORT	6 					// force report every X cycles
 
-#define MIN_FOOD_DIST	3	// minimum food distance in cm (when full)
+#define MIN_FOOD_DIST	0	// minimum food distance in cm (when full)
 #define MAX_FOOD_DIST	150	// maximum food distance in cm (when empty)
 
 #define WATER_INVERT	true	// floating switch logic (NC or NO)
