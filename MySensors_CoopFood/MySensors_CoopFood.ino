@@ -21,13 +21,18 @@
 
 // MySensors
 #define MY_RADIO_NRF24
-#define MY_NODE_ID 					211
-#define MY_TRANSPORT_WAIT_READY_MS	5000	//set how long to wait for transport ready. in milliseconds
-//#define MY_TRANSPORT_SANITY_CHECK
-//#define MY_REPEATER_FEATURE
+#define MY_NODE_ID 		211
 
-#define SLEEP_TIME		(	60*60*1000ul) 	// sleep period
-#define FORCE_REPORT		6 	// force report every X cycles
+//https://forum.mysensors.org/topic/5778/mys-library-startup-control-after-onregistration/7
+#define MY_TRANSPORT_WAIT_READY_MS				(	5*1000ul)	// how long to wait for transport ready at boot
+#define MY_TRANSPORT_SANITY_CHECK								// check if transport is available
+#define MY_TRANSPORT_SANITY_CHECK_INTERVAL_MS	(15*60*1000ul)	// how often to  check if transport is available (already set as default)
+#define MY_TRANSPORT_TIMEOUT_EXT_FAILURE_STATE	(5*	60*1000ul)	//  how often to reconnect if no transport
+//#define MY_REPEATER_FEATURE										// set as Repeater
+
+//#define SLEEP_TIME	(	60*60*1000ul) 	// sleep period
+#define SLEEP_TIME		(	2*1000ul) 		// every 2 sec
+#define FORCE_REPORT	6 					// force report every X cycles
 
 #define MIN_FOOD_DIST	3	// minimum food distance in cm (when full)
 #define MAX_FOOD_DIST	150	// maximum food distance in cm (when empty)
@@ -66,10 +71,10 @@
 #define PIN_BATTERY		A0		// Battery measurement
 #define PIN_ONEWIRE		3		// OneWire (DS18B20) Bus
 
-#define PIN_US_POWER	2		// Ultrasonic sensor : VCC Pin
+#define PIN_US_POWER	A4		// Ultrasonic sensor : VCC Pin
 #define PIN_US_TRIG		5		// Ultrasonic sensor : Trigger Pin
 #define PIN_US_ECHO		6		// Ultrasonic sensor : Echo Pin
-#define PIN_WATER		4		// Floating switch pin
+#define PIN_WATER		2		// Floating switch pin
 
 // Variables ###################################################################
 boolean				init_msg_sent		=false;			//did we sent the init message?
@@ -104,8 +109,6 @@ void before() {
 	// Setup Pins -----------------------
 	pinMode(PIN_BATTERY,	INPUT);
 	pinMode(PIN_US_POWER,	OUTPUT);
-	pinMode(PIN_US_TRIG,	OUTPUT);
-	pinMode(PIN_US_ECHO,	INPUT);
 	pinMode(PIN_WATER,		INPUT);
 
 	dallas.begin();
@@ -191,7 +194,7 @@ void reportsFood(){
 	digitalWrite(PIN_US_POWER, HIGH);
 	wait(100);
 
-	int distance= sonarFood.ping_cm();
+	int distance= sonarFood.convert_cm(sonarFood.ping_median());
 	byte level=map(distance, MIN_FOOD_DIST, MAX_FOOD_DIST, 100, 0);
 
 	DEBUG_PRINT(distance);
