@@ -70,11 +70,11 @@
 // Pins ########################################################################
 #define PIN_BATTERY		A0		// Battery measurement
 #define PIN_ONEWIRE		3		// OneWire (DS18B20) Bus
+#define PIN_WATER		2		// Floating switch pin
 
 #define PIN_US_POWER	A4		// Ultrasonic sensor : VCC Pin
 #define PIN_US_TRIG		5		// Ultrasonic sensor : Trigger Pin
 #define PIN_US_ECHO		6		// Ultrasonic sensor : Echo Pin
-#define PIN_WATER		2		// Floating switch pin
 
 // Variables ###################################################################
 boolean				init_msg_sent		=false;			//did we sent the init message?
