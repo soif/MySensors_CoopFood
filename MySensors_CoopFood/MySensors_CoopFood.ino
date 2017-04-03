@@ -273,8 +273,8 @@ void reportsBattery(){
 	for (int counter = 0; counter < BAT_READS; counter++) {
 		read=analogRead(PIN_BATTERY);
 	  	sum +=read;
-	  	DEBUG_PRINT(read);
-	  	DEBUG_PRINT(" + ");
+	  	//DEBUG_PRINT(read);
+	  	//DEBUG_PRINT(" + ");
      	wait(5);
     }
 
