@@ -1,13 +1,30 @@
-# MySensors Coop Food (WORK IN PROGRESS)
+# MySensors Coop Food
 
-This Arduino Pro Mini (3.3V) based project is a [MySensors](https://www.mysensors.org/)  node which periodically watches and reports the level of food and the level of water, in my chicken coop.
+This Arduino ProMini based project is a [MySensors](https://www.mysensors.org/)  node which periodically watches and reports the level of food and the level of water, in my chicken coop.
 
 
 ## Features
-
 - measures food level using an ultrasonic sensor
-- triggered by a floating switch at the water minimum level
+- triggered by a float switch at the water minimum level
 - works on battery
+
+
+## B.O.M.
+- Arduino ProMini 3.3v
+- Ultrasonic Sensor US-100 (3.3v)
+- DS18B20
+- Float Switch
+- StepUp 3.3V
+- 1M ohms resistor
+- 470K ohms resistor
+- 4.7K ohms resistor
+- 0.1uF Ceramic Capacitor
+
+
+## Building Notes
+- I've used the excellent [sundberg84's PCB](https://www.openhardware.io/view/4/EasyNewbie-PCB-for-MySensors)  which really eases the whole wiring.
+- I'm using the US sensor in a PVC tube (that feeds the chicken's feeder). A crucial difficulty is to  set the US sensor perfectly parallel to the tube lid, so that the triggered sound will bounce only on the bottom of the tube
+- Use the calibrate_us.ino sketch to adjust and calibrate the US sensor.
 
 
 ## Schematic
@@ -19,7 +36,8 @@ This Arduino Pro Mini (3.3V) based project is a [MySensors](https://www.mysensor
 
 ## Images
 ![Box](images/img_box.jpg)
-![OpenBox](images/img_open.jpg)
+
+![Coop](images/img_coop.jpg)
 
 
 ## License
