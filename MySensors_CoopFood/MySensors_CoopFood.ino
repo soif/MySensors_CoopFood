@@ -13,6 +13,8 @@
 // debug #######################################################################
 #define OWN_DEBUG	// Comment/uncomment to remove/show debug (May overflow Arduino memory when set)
 #define MY_DEBUG	// Comment/uncomment to remove/show MySensors debug messages (May overflow Arduino memory when set)
+//#define MY_DEBUG_VERBOSE
+//#define MY_DEBUG_VERBOSE_RF24
 
 
 // Define ######################################################################
@@ -30,14 +32,14 @@
 #define MY_TRANSPORT_TIMEOUT_EXT_FAILURE_STATE	(5*	60*1000ul)	//  how often to reconnect if no transport
 //#define MY_REPEATER_FEATURE										// set as Repeater
 
-//#define SLEEP_TIME	(	60*60*1000ul) 	// sleep period
-#define SLEEP_TIME		(	2*1000ul) 		// every 2 sec
+#define SLEEP_TIME	(	60*60*1000ul) 	// sleep period
+//#define SLEEP_TIME		(	2*1000ul) 		// every 2 sec
 #define FORCE_REPORT	6 					// force report every X cycles
 
-#define MIN_FOOD_DIST	0	// minimum food distance in cm (when full)
-#define MAX_FOOD_DIST	150	// maximum food distance in cm (when empty)
+#define MIN_FOOD_DIST	9	// minimum food distance in cm (when full)
+#define MAX_FOOD_DIST	135	// maximum food distance in cm (when empty)
 
-#define WATER_INVERT	true	// floating switch logic (NC or NO)
+#define WATER_INVERT	false	// floating switch logic (NC or NO)
 #define WATER_PULLUP	true	// floating switch internal pullup
 #define WATER_DEBOUNCE	50		// floating switch debounce time
 
@@ -73,8 +75,8 @@
 #define PIN_WATER		2		// Floating switch pin
 
 #define PIN_US_POWER	A4		// Ultrasonic sensor : VCC Pin
-#define PIN_US_TRIG		5		// Ultrasonic sensor : Trigger Pin
-#define PIN_US_ECHO		6		// Ultrasonic sensor : Echo Pin
+#define PIN_US_TRIG		6		// Ultrasonic sensor : Trigger Pin
+#define PIN_US_ECHO		5		// Ultrasonic sensor : Echo Pin
 
 // Variables ###################################################################
 boolean				init_msg_sent		=false;			//did we sent the init message?
@@ -93,8 +95,8 @@ Button 				buttWater(PIN_WATER, WATER_PULLUP, WATER_INVERT, WATER_DEBOUNCE);
 OneWire 			oneWire(PIN_ONEWIRE);
 DallasTemperature 	dallas(&oneWire);
 
-MyMessage 			msgFood		(	CHILD_ID_FOOD,	V_PERCENTAGE);
-MyMessage 			msgWater	(	CHILD_ID_WATER,	V_STATUS);
+MyMessage 			msgFood		(	CHILD_ID_FOOD,	V_DISTANCE);
+MyMessage 			msgWater	(	CHILD_ID_WATER,	V_TRIPPED);
 MyMessage 			msgTemp		(	CHILD_ID_TEMP,	V_TEMP);
 
 // #############################################################################
@@ -121,6 +123,8 @@ void before() {
 void setup() {
 	DEBUG_PRINTLN("");
 	DEBUG_PRINTLN("----Setup START-------");
+
+	Serial.begin(9600); //compatible with Bluetooth HC05
 
 	DEBUG_PRINTLN("----Setup END  -------");
 }
@@ -177,8 +181,8 @@ void presentation(){
 	DEBUG_PRINTLN("");
 	DEBUG_PRINTLN("*** Presentation START ******");
 	sendSketchInfo(INFO_NAME ,	INFO_VERS );
-	present(CHILD_ID_FOOD,		S_RGB_LIGHT);
-	present(CHILD_ID_WATER,		S_DIMMER);
+	present(CHILD_ID_FOOD,		S_DISTANCE);
+	present(CHILD_ID_WATER,		S_WATER_LEAK);
 	present(CHILD_ID_TEMP,		S_TEMP);
 	DEBUG_PRINTLN("*** Presentation END ******");
 }
