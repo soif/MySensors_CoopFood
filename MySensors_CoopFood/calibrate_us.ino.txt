@@ -1,0 +1,77 @@
+/*
+	Sketch to Test the Ultrasonic sensor distances,
+	https://github.com/soif/MySensors_CoopFood
+	Copyright 2017 François Déchery
+
+	To use it:
+	Rename "MySensors_CoopFood.ino" to "MySensors_CoopFood.ino.txt"
+	Rename this "calibrate_us.ino.txt" to "calibrate_us.ino"
+	
+*/
+
+// debug #######################################################################
+#define OWN_DEBUG	// Comment/uncomment to remove/show debug (May overflow Arduino memory when set)
+
+#define MIN_FOOD_DIST	0	// minimum food distance in cm (when full)
+#define MAX_FOOD_DIST	170	// maximum food distance in cm (when empty)
+
+#define PERIOD			200
+
+// includes ####################################################################
+#include "own_debug.h"
+
+// ultrasonic lib
+#include <NewPing.h>
+
+#define PIN_US_POWER	A4		// Ultrasonic sensor : VCC Pin
+#define PIN_US_TRIG		6		// Ultrasonic sensor : Trigger Pin
+#define PIN_US_ECHO		5		// Ultrasonic sensor : Echo Pin
+
+NewPing 			sonarFood(PIN_US_TRIG, PIN_US_ECHO, MAX_FOOD_DIST + 5 );
+
+// #############################################################################
+// ## MAIN  ####################################################################
+// #############################################################################
+
+
+// --------------------------------------------------------------------
+void setup() {
+	Serial.begin(9600); //compatible with Bluetooth HC05
+	
+	DEBUG_PRINTLN("");
+	DEBUG_PRINTLN("----Setup START-------");
+	pinMode(PIN_US_POWER,	OUTPUT);
+
+	DEBUG_PRINTLN("----Setup END  -------");
+}
+
+
+// --------------------------------------------------------------------
+void loop() {
+		reportsFood();
+		delay(PERIOD);
+}
+
+
+// FUNCTIONS ###################################################################
+
+
+// --------------------------------------------------------------------
+void reportsFood(){
+	//DEBUG_PRINTLN("");
+	DEBUG_PRINT("# Reading Food : ");
+	digitalWrite(PIN_US_POWER, HIGH);
+	delay(100);
+
+	int distance= sonarFood.convert_cm(sonarFood.ping_median());
+//	int distance= sonarFood.convert_cm(sonarFood.ping());
+
+	byte level=map(distance, MIN_FOOD_DIST, MAX_FOOD_DIST, 100, 0);
+
+	DEBUG_PRINT(distance);
+	DEBUG_PRINT(" cm , ");
+	DEBUG_PRINT(level);
+	DEBUG_PRINTLN(" %");
+
+	digitalWrite(PIN_US_POWER, LOW);
+}
